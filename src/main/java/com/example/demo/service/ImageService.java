@@ -16,7 +16,7 @@ public class ImageService {
     public Image store(@NonNull String location, byte[] image) {
         Image i = new Image();
         i.setDateTime(LocalDateTime.now());
-        i.setFileName(File.separator + location);
+        i.setFileName(location);
         i.setImage(image);
         return imageRepo.save(i);
     }

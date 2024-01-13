@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.exception.IllegalFileTypeException;
 import com.example.demo.exception.StorageException;
+import com.example.demo.model.GlobalPathConstants;
 import com.example.demo.service.EntryService;
 import com.example.demo.service.ImageService;
 import com.example.demo.service.StorageService;
@@ -29,8 +30,10 @@ public class DemoController {
     @PostMapping("/newuser")
     public ResponseEntity<String> newUser(@NonNull @RequestParam MultipartFile file, @NonNull @RequestParam String name) {
         try {
+            storageService.setRootPath(storageService.getRootPath().resolve(GlobalPathConstants.USER_PATH));
             storageService.store(file);
-            imageService.store("/user" + storageService.getRecentFileName(), file.getBytes());
+            userService.newUser(name, imageService.store(GlobalPathConstants.USER_PATH, file.getBytes()));
+            storageService.flushPath();
             return ResponseEntity.status(HttpStatus.OK).body("Register new user successfully.");
         } catch (IOException e) {
             throw new StorageException(e);
@@ -41,10 +44,12 @@ public class DemoController {
 
     @ExceptionHandler(IllegalFileTypeException.class)
     public ResponseEntity<String> handleIllegalFileTypeException(@NonNull IllegalFileTypeException e) {
+        storageService.flushPath();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
     @ExceptionHandler(StorageException.class)
     public ResponseEntity<String> handleIllegalFileTypeException(@NonNull StorageException e) {
+        storageService.flushPath();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }

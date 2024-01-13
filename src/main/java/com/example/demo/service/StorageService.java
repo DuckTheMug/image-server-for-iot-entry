@@ -7,6 +7,7 @@ import com.example.demo.model.Storage;
 import com.example.demo.util.RandomFileNameUtil;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,20 +22,26 @@ import java.util.Objects;
 
 @Service
 public class StorageService {
-    private final Path rootPath;
+    @Getter
+    private Path rootPath;
 
     @Getter
     private String recentFileName;
 
+    private String defaultPath;
+
     public StorageService(@NonNull @Autowired Storage storage) {
         if (storage.getPath().isBlank())
             throw new StorageException();
-        this.rootPath = Paths.get(storage.getPath().strip());
+        this.defaultPath = storage.getPath().strip();
+        this.rootPath = Paths.get(this.defaultPath);
         if (!this.rootPath.toFile().exists()) {
             try {
-                Files.createDirectories(this.rootPath);
-            } catch (IOException e) {
-                throw new StorageException("Can't not initialize the root path directory", e);
+                this.init();
+            } catch (StorageException e) {
+                this.defaultPath = null;
+                this.rootPath = null;
+                throw e;
             }
         }
     }
@@ -57,9 +64,6 @@ public class StorageService {
         try {
             this.recentFileName = RandomFileNameUtil.randomFileName(ext);
             Path toStoreFile = this.rootPath.resolve(Paths.get(this.recentFileName)).normalize().toAbsolutePath();
-//            if (!toStoreFile.getParent().equals(this.rootPath.toAbsolutePath())) {
-//                throw new StorageException("Can't store file outside the root path.");
-//            }
             try (InputStream stream = file.getInputStream()) {
                 Files.copy(stream, toStoreFile);
             }
@@ -67,5 +71,23 @@ public class StorageService {
             this.recentFileName = previousFileName;
             throw new StorageException("Failed to store file.", e);
         }
+    }
+
+    public void flushPath() {
+        this.rootPath = Paths.get(this.defaultPath);
+    }
+
+    public void init() {
+        try {
+            Files.createDirectories(this.rootPath);
+        } catch (IOException e) {
+            throw new StorageException("Can't not initialize the root path directory", e);
+        }
+    }
+
+    public void setRootPath(@NonNull Path rootPath) {
+        this.rootPath = rootPath;
+        if (!this.rootPath.toFile().exists())
+            this.init();
     }
 }

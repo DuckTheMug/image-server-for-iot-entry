@@ -14,11 +14,11 @@ import java.util.HashSet;
 public class UserService {
     private final UserRepo userRepo;
 
-    public User newUser(@NonNull String name, @NonNull Image image) {
+    public void newUser(@NonNull String name, @NonNull Image image) {
         User user = new User();
         user.setName(name);
         user.setImage(image);
         user.setEntries(new HashSet<>());
-        return userRepo.save(user);
+        userRepo.save(user);
     }
 }
