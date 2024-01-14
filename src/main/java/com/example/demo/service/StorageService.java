@@ -7,7 +7,6 @@ import com.example.demo.model.Storage;
 import com.example.demo.util.RandomFileNameUtil;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,9 +45,9 @@ public class StorageService {
         }
     }
 
-    public void store(@NonNull MultipartFile file) {
+    public void store(@NonNull MultipartFile file, String filename) {
         @NonNull String ext;
-        //Checks if the file type is valid
+        // Checks if the file type is valid
         try {
              ext = Objects.requireNonNull(FilenameUtils.getExtension(file.getOriginalFilename()));
         } catch (NullPointerException e) {
@@ -62,7 +61,9 @@ public class StorageService {
         }
         String previousFileName = this.recentFileName;
         try {
-            this.recentFileName = RandomFileNameUtil.randomFileName(ext);
+            // if there is no specific filename, the filename would be randomized (for new entries)
+            // if there is a specific filename, the filename would be set accordingly (for new users)
+            this.recentFileName = (filename == null) ? RandomFileNameUtil.randomFileName(ext) : filename + "." + ext;
             Path toStoreFile = this.rootPath.resolve(Paths.get(this.recentFileName)).normalize().toAbsolutePath();
             try (InputStream stream = file.getInputStream()) {
                 Files.copy(stream, toStoreFile);

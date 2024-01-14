@@ -31,7 +31,7 @@ public class DemoController {
     public ResponseEntity<String> newUser(@NonNull @RequestParam MultipartFile file, @NonNull @RequestParam String name) {
         try {
             storageService.setRootPath(storageService.getRootPath().resolve(GlobalPathConstants.USER_PATH));
-            storageService.store(file);
+            storageService.store(file, name);
             userService.newUser(name, imageService.store(GlobalPathConstants.USER_PATH, file.getBytes()));
             storageService.flushPath();
             return ResponseEntity.status(HttpStatus.OK).body("Register new user successfully.");
