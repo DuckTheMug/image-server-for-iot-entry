@@ -7,7 +7,7 @@ import numpy as np
     Exit codes:
     0 - Exited Normally
     -1 - Internal Error
-    1 - User Error
+    -2 - User Error
 """
 
 arg: str = sys.argv[1]
@@ -17,7 +17,7 @@ if arg is None:
     exit(-1)
 
 # change the working directory to the image folder for image processing
-os.chdir(os.path.join(os.path.dirname(os.path.abspath(__name__)), '..', '..', '..', 'images'))
+os.chdir(os.path.join(os.path.dirname(os.path.abspath(__name__)), 'images'))
 arg = os.path.join(os.path.dirname(os.path.abspath(__name__)), arg)
 
 # check if the file exists
@@ -28,7 +28,7 @@ faces: list = fr.face_encodings(fr.load_image_file(arg))
 
 # check if there is no face or more than 1 face
 if (len(faces) == 0) | (len(faces) >= 2):
-    exit(1)
+    exit(-2)
 
 raw_folder: str = os.path.join(os.path.dirname(os.path.abspath(__name__)), '..', 'raw_data')
 

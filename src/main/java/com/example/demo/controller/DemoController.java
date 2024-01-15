@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.exception.IllegalFileTypeException;
+import com.example.demo.exception.InvalidImageInputException;
+import com.example.demo.exception.PythonException;
 import com.example.demo.exception.StorageException;
 import com.example.demo.model.GlobalPathConstants;
 import com.example.demo.service.EntryService;
@@ -32,7 +34,7 @@ public class DemoController {
         try {
             storageService.setRootPath(storageService.getRootPath().resolve(GlobalPathConstants.USER_PATH));
             storageService.store(file, name);
-            userService.newUser(name, imageService.store(GlobalPathConstants.USER_PATH, file.getBytes()));
+            userService.newUser(storageService.getRecentFileName(), imageService.store(GlobalPathConstants.USER_PATH + storageService.getRecentFileName(), file.getBytes()));
             storageService.flushPath();
             return ResponseEntity.status(HttpStatus.OK).body("Register new user successfully.");
         } catch (IOException e) {
@@ -42,13 +44,19 @@ public class DemoController {
 
 
 
-    @ExceptionHandler(IllegalFileTypeException.class)
-    public ResponseEntity<String> handleIllegalFileTypeException(@NonNull IllegalFileTypeException e) {
+    @ExceptionHandler({
+            IllegalFileTypeException.class,
+            InvalidImageInputException.class
+    })
+    public ResponseEntity<String> handleIllegalFileException(@NonNull RuntimeException e) {
         storageService.flushPath();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
-    @ExceptionHandler(StorageException.class)
-    public ResponseEntity<String> handleIllegalFileTypeException(@NonNull StorageException e) {
+    @ExceptionHandler({
+            StorageException.class,
+            PythonException.class
+    })
+    public ResponseEntity<String> handleInternalException(@NonNull RuntimeException e) {
         storageService.flushPath();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
