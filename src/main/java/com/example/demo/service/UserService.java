@@ -20,13 +20,9 @@ public class UserService {
     private final UserRepo userRepo;
 
     public void newUser(@NonNull String filename, @NonNull Image image){
-        String [] pythonCmd = new String[3];
-        pythonCmd[0] = "python";
-        pythonCmd[1] = GlobalPathConstants.PYTHON_NEW_USER_SCRIPT;
-        pythonCmd[2] = GlobalPathConstants.USER_PATH + filename;
+        PythonService pythonService = new PythonService(GlobalPathConstants.PYTHON_NEW_USER_SCRIPT, GlobalPathConstants.USER_PATH + filename);
         try {
-            int exitCode = Runtime.getRuntime().exec(pythonCmd).waitFor();
-            switch (exitCode) {
+            switch (pythonService.exec()) {
                 case -1:
                     throw new PythonException("Image path is empty or doesn't exist.");
                 case -2:

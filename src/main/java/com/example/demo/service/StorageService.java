@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.exception.IllegalFileTypeException;
 import com.example.demo.exception.StorageException;
-import com.example.demo.model.AllowedFileType;
+import com.example.demo.model.AllowedFileTypes;
 import com.example.demo.model.Storage;
 import com.example.demo.util.RandomFileNameUtil;
 import lombok.Getter;
@@ -53,10 +53,10 @@ public class StorageService {
         } catch (NullPointerException e) {
             throw new IllegalFileTypeException("Only JPG, JPEG, PNG or GIF file is allowed.");
         }
-        for (int i = 0; i < AllowedFileType.values().length; i++) {
-            if (ext.equals(AllowedFileType.values()[i].name()))
+        for (int i = 0; i < AllowedFileTypes.values().length; i++) {
+            if (ext.equals(AllowedFileTypes.values()[i].name()))
                 break;
-            else if (i == AllowedFileType.values().length - 1)
+            else if (i == AllowedFileTypes.values().length - 1)
                 throw new IllegalFileTypeException("Only JPG, JPEG, PNG or GIF file is allowed.");
         }
         String previousFileName = this.recentFileName;

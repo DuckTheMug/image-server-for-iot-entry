@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-public enum AllowedFileType {
+public enum AllowedFileTypes {
     jpg,
     jpeg,
     png,
