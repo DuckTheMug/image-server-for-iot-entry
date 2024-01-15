@@ -1,9 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.exception.IllegalFileTypeException;
-import com.example.demo.exception.InvalidImageInputException;
-import com.example.demo.exception.PythonException;
-import com.example.demo.exception.StorageException;
+import com.example.demo.exception.*;
 import com.example.demo.model.GlobalPathConstants;
 import com.example.demo.service.EntryService;
 import com.example.demo.service.ImageService;
@@ -46,7 +43,8 @@ public class DemoController {
 
     @ExceptionHandler({
             IllegalFileTypeException.class,
-            InvalidImageInputException.class
+            InvalidImageInputException.class,
+            UserAlreadyExistsException.class
     })
     public ResponseEntity<String> handleIllegalFileException(@NonNull RuntimeException e) {
         storageService.flushPath();

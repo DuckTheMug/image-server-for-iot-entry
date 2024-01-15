@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.exception.IllegalFileTypeException;
 import com.example.demo.exception.StorageException;
+import com.example.demo.exception.UserAlreadyExistsException;
 import com.example.demo.model.AllowedFileTypes;
 import com.example.demo.model.Storage;
 import com.example.demo.util.RandomFileNameUtil;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -68,6 +70,9 @@ public class StorageService {
             try (InputStream stream = file.getInputStream()) {
                 Files.copy(stream, toStoreFile);
             }
+        } catch (FileAlreadyExistsException e) {
+            this.recentFileName = previousFileName;
+            throw new UserAlreadyExistsException("User already exists.", e);
         } catch (IOException e) {
             this.recentFileName = previousFileName;
             throw new StorageException("Failed to store file.", e);
