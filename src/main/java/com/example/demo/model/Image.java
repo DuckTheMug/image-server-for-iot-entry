@@ -28,8 +28,8 @@ public class Image {
     private LocalDateTime dateTime;
 
     @NonNull
-    @Column(name = "filename", nullable = false, unique = true)
-    private String fileName;
+    @Column(name = "location", nullable = false, unique = true)
+    private String location;
 
     @Column(name = "image", length = Integer.MAX_VALUE, nullable = false)
     @Lob

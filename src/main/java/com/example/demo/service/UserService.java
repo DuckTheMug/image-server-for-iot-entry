@@ -20,25 +20,17 @@ public class UserService {
     private final UserRepo userRepo;
 
     public void newUser(@NonNull String filename, @NonNull Image image){
-        PythonService pythonService = new PythonService(GlobalPathConstants.PYTHON_NEW_USER_SCRIPT, GlobalPathConstants.USER_PATH + filename);
-        try {
-            switch (pythonService.exec()) {
-                case -1:
-                    throw new PythonException("Image path is empty or doesn't exist.");
-                case -2:
-                    throw new InvalidImageInputException("The picture has no valid face or more than 1 valid face.");
-                case 0:
-                    break;
-                default:
-                    throw new PythonException("Failed to run the python script.");
-            }
-            User user = new User();
-            user.setName(FilenameUtils.getBaseName(filename));
-            user.setImage(image);
-            user.setEntries(new HashSet<>());
-            userRepo.save(user);
-        } catch (IOException | InterruptedException e) {
-            throw new PythonException("Failed to run the python script.", e);
-        }
+        User user = new User();
+        user.setName(FilenameUtils.getBaseName(filename));
+        user.setImage(image);
+        user.setEntries(new HashSet<>());
+        userRepo.save(user);
+    }
+    public void deleteUser(@NonNull String name) {
+        userRepo.deleteByName(name);
+    }
+
+    public User findUserByName(@NonNull String name) {
+        return userRepo.findByName(name);
     }
 }

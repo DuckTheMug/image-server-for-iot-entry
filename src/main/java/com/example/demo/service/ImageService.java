@@ -13,11 +13,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ImageService {
     private final ImageRepo imageRepo;
-    public Image store(@NonNull String location, byte[] image) {
+    public Image store(@NonNull String location, byte @NonNull [] image) {
         Image i = new Image();
         i.setDateTime(LocalDateTime.now());
-        i.setFileName(location);
+        i.setLocation(location);
         i.setImage(image);
         return imageRepo.save(i);
+    }
+    public void deleteImage(@NonNull Image image) {
+        imageRepo.delete(image);
+    }
+
+    public Image getImage(@NonNull String location) {
+        return imageRepo.findByLocation(location);
     }
 }

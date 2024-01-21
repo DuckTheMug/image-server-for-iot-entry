@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.exception.*;
 import com.example.demo.model.GlobalPathConstants;
+import com.example.demo.model.Image;
 import com.example.demo.service.EntryService;
 import com.example.demo.service.ImageService;
 import com.example.demo.service.StorageService;
@@ -39,12 +40,24 @@ public class DemoController {
         }
     }
 
-
+    @PostMapping("/deleteuser")
+    public ResponseEntity<String> deleteUser(@NonNull @RequestParam String name) {
+        try {
+            Image toBeDeleted = userService.findUserByName(name).getImage();
+            storageService.delete(toBeDeleted.getLocation());
+            imageService.deleteImage(toBeDeleted);
+            userService.deleteUser(name);
+            return ResponseEntity.status(HttpStatus.OK).body("Delete user successfully.");
+        } catch (NullPointerException e) {
+            throw new UserDoesNotExistException("User doesn't exist.", e);
+        }
+    }
 
     @ExceptionHandler({
             IllegalFileTypeException.class,
             InvalidImageInputException.class,
-            UserAlreadyExistsException.class
+            UserAlreadyExistsException.class,
+            UserDoesNotExistException.class
     })
     public ResponseEntity<String> handleIllegalFileException(@NonNull RuntimeException e) {
         storageService.flushPath();

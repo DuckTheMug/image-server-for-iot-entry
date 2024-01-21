@@ -47,7 +47,7 @@ public class StorageService {
         }
     }
 
-    public void store(@NonNull MultipartFile file, String filename) {
+    public void store(@NonNull MultipartFile file, String name) {
         @NonNull String ext;
         // Checks if the file type is valid
         try {
@@ -65,7 +65,7 @@ public class StorageService {
         try {
             // if there is no specific filename, the filename would be randomized (for new entries)
             // if there is a specific filename, the filename would be set accordingly (for new users)
-            this.recentFileName = (filename == null) ? RandomFileNameUtil.randomFileName(ext) : filename + "." + ext;
+            this.recentFileName = (name == null) ? RandomFileNameUtil.randomFileName(ext) : name + "." + ext;
             Path toStoreFile = this.rootPath.resolve(Paths.get(this.recentFileName)).normalize().toAbsolutePath();
             try (InputStream stream = file.getInputStream()) {
                 Files.copy(stream, toStoreFile);
@@ -76,6 +76,14 @@ public class StorageService {
         } catch (IOException e) {
             this.recentFileName = previousFileName;
             throw new StorageException("Failed to store file.", e);
+        }
+    }
+
+    public void delete(String location) {
+        try {
+            Files.deleteIfExists(this.rootPath.resolve(location));
+        } catch (IOException e) {
+            throw new StorageException("Failed to delete file.", e);
         }
     }
 

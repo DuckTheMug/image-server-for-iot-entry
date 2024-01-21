@@ -2,7 +2,6 @@ import sys
 import os
 import face_recognition as fr
 import numpy as np
-
 """
     Exit codes:
     0 - Exited Normally
