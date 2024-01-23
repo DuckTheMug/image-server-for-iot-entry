@@ -1,12 +1,12 @@
 import sys
 import os
-import face_recognition as fr
-import numpy as np
+import deepface.DeepFace as DeepFace
+
 """
     Exit codes:
     0 - Exited Normally
     -1 - Internal Error
-    -2 - User Error
+    -2 - Input Error
 """
 
 arg: str = sys.argv[1]
@@ -23,18 +23,18 @@ arg = os.path.join(os.path.dirname(os.path.abspath(__name__)), arg)
 if not os.path.exists(arg):
     exit(-1)
 
-faces: list = fr.face_encodings(fr.load_image_file(arg))
+face: int = DeepFace.extract_faces(arg).__len__()
 
 # check if there is no face or more than 1 face
-if (len(faces) == 0) | (len(faces) >= 2):
+if (face == 0) | (face >= 2):
     exit(-2)
 
-raw_folder: str = os.path.join(os.path.dirname(os.path.abspath(__name__)), '..', 'raw_data')
+# clear cache if exists
+cache: str = os.path.join(os.path.dirname(arg), "representations_vgg_face.pkl")
+if os.path.exists(cache):
+    os.remove(cache)
 
-# check if the raw data folder exists
-if not os.path.exists(raw_folder):
-    os.makedirs(raw_folder)
+# using find itself to generate the cache
+DeepFace.find(os.path.dirname(arg), arg)
 
-# save to file for later processing and exit
-np.save(file=os.path.join(raw_folder, os.path.basename(arg).split('.')[0]), arr=faces)
 exit(0)

@@ -11,10 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -32,15 +29,15 @@ public class DemoController {
         try {
             storageService.setRootPath(storageService.getRootPath().resolve(GlobalPathConstants.USER_PATH));
             storageService.store(file, name);
-            userService.newUser(storageService.getRecentFileName(), imageService.store(GlobalPathConstants.USER_PATH + storageService.getRecentFileName(), file.getBytes()));
+            userService.newUser(imageService.store(GlobalPathConstants.USER_PATH + storageService.getRecentFileName(), file.getBytes()));
             storageService.flushPath();
             return ResponseEntity.status(HttpStatus.OK).body("Register new user successfully.");
         } catch (IOException e) {
-            throw new StorageException(e);
+            throw new StorageException("Failed to store file.", e);
         }
     }
 
-    @PostMapping("/deleteuser")
+    @DeleteMapping("/deleteuser")
     public ResponseEntity<String> deleteUser(@NonNull @RequestParam String name) {
         try {
             Image toBeDeleted = userService.findUserByName(name).getImage();
@@ -50,6 +47,24 @@ public class DemoController {
             return ResponseEntity.status(HttpStatus.OK).body("Delete user successfully.");
         } catch (NullPointerException e) {
             throw new UserDoesNotExistException("User doesn't exist.", e);
+        }
+    }
+
+    @PostMapping("/newentry")
+    public ResponseEntity<String> newEntry(@NonNull @RequestParam MultipartFile file) {
+        try {
+            storageService.setRootPath(storageService.getRootPath().resolve(GlobalPathConstants.ENTRY_PATH));
+            storageService.store(file, null);
+            Boolean accessGranted = entryService.newEntry(imageService.store(GlobalPathConstants.ENTRY_PATH + storageService.getRecentFileName(), file.getBytes())).getAccessGranted();
+            if (accessGranted) {
+                // Send POST request to ESP32-CAM
+            } else {
+                // Send POST request to ESP32-CAM
+            }
+            storageService.flushPath();
+            return ResponseEntity.status(HttpStatus.OK).body("Register new entry successfully.");
+        } catch (IOException e) {
+            throw new StorageException("Failed to store file.", e);
         }
     }
 

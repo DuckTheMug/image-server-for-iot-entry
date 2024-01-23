@@ -19,9 +19,10 @@ import java.util.HashSet;
 public class UserService {
     private final UserRepo userRepo;
 
-    public void newUser(@NonNull String filename, @NonNull Image image){
+    public void newUser(@NonNull Image image) {
+        validate(image.getLocation());
         User user = new User();
-        user.setName(FilenameUtils.getBaseName(filename));
+        user.setName(FilenameUtils.getBaseName(image.getLocation()));
         user.setImage(image);
         user.setEntries(new HashSet<>());
         userRepo.save(user);
@@ -32,5 +33,20 @@ public class UserService {
 
     public User findUserByName(@NonNull String name) {
         return userRepo.findByName(name);
+    }
+
+    private void validate(@NonNull String location) {
+        PythonService pythonService = new PythonService(GlobalPathConstants.PYTHON_NEW_USER_SCRIPT, location);
+        try {
+            switch (pythonService.exec()) {
+                case 0 -> {}
+                case -1 -> throw new PythonException("Image path is empty or doesn't exist.");
+                case -2 ->
+                        throw new InvalidImageInputException("The picture has no valid face or more than 1 valid face.");
+                default -> throw new PythonException("Failed to run the python script.");
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new PythonException("Failed to run the python script.", e);
+        }
     }
 }
