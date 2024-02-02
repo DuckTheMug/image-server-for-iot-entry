@@ -1,8 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.exception.InvalidImageInputException;
-import com.example.demo.exception.PythonException;
-import com.example.demo.constant.GlobalPathConstants;
 import com.example.demo.model.Image;
 import com.example.demo.model.User;
 import com.example.demo.repo.UserRepo;
@@ -11,7 +8,6 @@ import lombok.NonNull;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.HashSet;
 
 @Service
@@ -36,17 +32,6 @@ public class UserService {
     }
 
     private void validate(@NonNull String location) {
-        PythonService pythonService = new PythonService(GlobalPathConstants.PYTHON_NEW_USER_SCRIPT, location);
-        try {
-            switch (pythonService.exec()) {
-                case 0 -> {}
-                case -1 -> throw new PythonException("Image path is empty or doesn't exist.");
-                case -2 ->
-                        throw new InvalidImageInputException("The picture has no valid face or more than 1 valid face.");
-                default -> throw new PythonException("Failed to run the python script.");
-            }
-        } catch (IOException | InterruptedException e) {
-            throw new PythonException("Failed to run the python script.", e);
-        }
+        // TODO
     }
 }
