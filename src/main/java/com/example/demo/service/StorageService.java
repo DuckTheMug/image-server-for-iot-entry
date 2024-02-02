@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.exception.IllegalFileTypeException;
 import com.example.demo.exception.StorageException;
 import com.example.demo.exception.UserAlreadyExistsException;
-import com.example.demo.model.AllowedFileTypes;
+import com.example.demo.constant.AllowedFileTypes;
 import com.example.demo.model.Storage;
 import com.example.demo.util.RandomFileNameUtil;
 import lombok.Getter;
@@ -56,7 +56,7 @@ public class StorageService {
             throw new IllegalFileTypeException("Only JPG, JPEG, PNG or GIF file is allowed.");
         }
         for (int i = 0; i < AllowedFileTypes.values().length; i++) {
-            if (ext.equals(AllowedFileTypes.values()[i].name()))
+            if (ext.equals(AllowedFileTypes.values()[i].getLabel()))
                 break;
             else if (i == AllowedFileTypes.values().length - 1)
                 throw new IllegalFileTypeException("Only JPG, JPEG, PNG or GIF file is allowed.");

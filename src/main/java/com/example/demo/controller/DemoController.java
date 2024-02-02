@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.exception.*;
-import com.example.demo.model.GlobalPathConstants;
+import com.example.demo.constant.GlobalPathConstants;
 import com.example.demo.model.Image;
 import com.example.demo.service.EntryService;
 import com.example.demo.service.ImageService;

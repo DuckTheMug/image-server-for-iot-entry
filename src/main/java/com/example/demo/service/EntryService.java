@@ -1,9 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.exception.InvalidImageInputException;
 import com.example.demo.exception.PythonException;
 import com.example.demo.model.Entry;
-import com.example.demo.model.GlobalPathConstants;
+import com.example.demo.constant.GlobalPathConstants;
 import com.example.demo.model.Image;
 import com.example.demo.repo.EntryRepo;
 import lombok.AllArgsConstructor;
