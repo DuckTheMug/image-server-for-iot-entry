@@ -7,6 +7,9 @@ import json
 os.chdir(os.path.join(os.path.dirname(os.path.abspath(__name__)), 'images'))
 root: str = os.path.dirname(os.path.abspath(__name__))
 
+# init deepface model
+DeepFace.build_model("VGG-Face")
+
 # line for testing
 # os.chdir(os.path.join(os.path.dirname(os.path.abspath(__name__)), '..', '..', '..', 'images'))
 
