@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.exception.*;
-import com.example.demo.constant.GlobalPathConstants;
+import com.example.demo.constant.PathConstants;
 import com.example.demo.model.Image;
 import com.example.demo.service.EntryService;
 import com.example.demo.service.ImageService;
@@ -27,9 +27,9 @@ public class DemoController {
     @PostMapping("/newuser")
     public ResponseEntity<String> newUser(@NonNull @RequestParam MultipartFile file, @NonNull @RequestParam String name) {
         try {
-            storageService.setRootPath(storageService.getRootPath().resolve(GlobalPathConstants.USER_PATH));
+            storageService.setRootPath(storageService.getRootPath().resolve(PathConstants.USER_PATH));
             storageService.store(file, name);
-            userService.newUser(imageService.store(GlobalPathConstants.USER_PATH + storageService.getRecentFileName(), file.getBytes()));
+            userService.newUser(imageService.store(PathConstants.USER_PATH + storageService.getRecentFileName(), file.getBytes()));
             storageService.flushPath();
             return ResponseEntity.status(HttpStatus.OK).body("Register new user successfully.");
         } catch (IOException e) {
@@ -53,9 +53,9 @@ public class DemoController {
     @PostMapping("/newentry")
     public ResponseEntity<String> newEntry(@NonNull @RequestParam MultipartFile file) {
         try {
-            storageService.setRootPath(storageService.getRootPath().resolve(GlobalPathConstants.ENTRY_PATH));
+            storageService.setRootPath(storageService.getRootPath().resolve(PathConstants.ENTRY_PATH));
             storageService.store(file, null);
-            Boolean accessGranted = entryService.newEntry(imageService.store(GlobalPathConstants.ENTRY_PATH + storageService.getRecentFileName(), file.getBytes())).getAccessGranted();
+            Boolean accessGranted = entryService.newEntry(imageService.store(PathConstants.ENTRY_PATH + storageService.getRecentFileName(), file.getBytes())).getAccessGranted();
             if (accessGranted) {
                 // Send POST request to ESP32-CAM
             } else {
