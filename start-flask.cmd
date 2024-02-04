@@ -1,1 +1,0 @@
-venv\Scripts\python src\main\python\image_processing.py

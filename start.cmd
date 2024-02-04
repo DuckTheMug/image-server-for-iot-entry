@@ -1,1 +1,1 @@
-start cmd.exe /k start-spring.cmd & start cmd.exe /k start-flask.cmd
+start cmd.exe /k mvn spring-boot:run & start cmd.exe /k venv\Scripts\python src\main\python\image_processing.py
