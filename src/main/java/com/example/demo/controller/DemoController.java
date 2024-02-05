@@ -24,7 +24,7 @@ public class DemoController {
     private final UserService userService;
     private final StorageService storageService;
 
-    @PostMapping("/newuser")
+    @PostMapping("/api/new_user")
     public ResponseEntity<String> newUser(@NonNull @RequestParam MultipartFile file, @NonNull @RequestParam String name) {
         try {
             storageService.setRootPath(storageService.getRootPath().resolve(PathConstants.USER_PATH));
@@ -37,7 +37,7 @@ public class DemoController {
         }
     }
 
-    @DeleteMapping("/deleteuser")
+    @DeleteMapping("/api/delete_user")
     public ResponseEntity<String> deleteUser(@NonNull @RequestParam String name) {
         try {
             Image toBeDeleted = userService.findUserByName(name).getImage();
@@ -50,7 +50,7 @@ public class DemoController {
         }
     }
 
-    @PostMapping("/newentry")
+    @PostMapping("/api/new_entry")
     public ResponseEntity<String> newEntry(@NonNull @RequestParam MultipartFile file) {
         try {
             storageService.setRootPath(storageService.getRootPath().resolve(PathConstants.ENTRY_PATH));
@@ -80,7 +80,7 @@ public class DemoController {
     }
     @ExceptionHandler({
             StorageException.class,
-            PythonException.class
+            InvalidPathException.class
     })
     public ResponseEntity<String> handleInternalException(@NonNull RuntimeException e) {
         storageService.flushPath();

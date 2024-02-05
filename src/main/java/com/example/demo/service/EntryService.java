@@ -3,17 +3,23 @@ package com.example.demo.service;
 import com.example.demo.constant.ImageProcessingConstants;
 import com.example.demo.constant.PathConstants;
 import com.example.demo.dto.ValidateEntryDto;
+import com.example.demo.exception.FlaskException;
 import com.example.demo.exception.InvalidPathException;
 import com.example.demo.model.Entry;
 import com.example.demo.model.Image;
 import com.example.demo.repo.EntryRepo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -21,6 +27,9 @@ import org.springframework.web.client.RestTemplate;
 public class EntryService {
     private final EntryRepo entryRepo;
 
+    @Getter
+    private String response;
+    
     public Entry newEntry(@NonNull Image image) {
         Entry entry = new Entry();
         entry.setImage(image);
@@ -32,13 +41,23 @@ public class EntryService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         ValidateEntryDto validateEntryDto = new ValidateEntryDto(entry, PathConstants.ENTRY_PATH);
-        ResponseEntity<String> response = new RestTemplate().postForEntity(
-                ImageProcessingConstants.VALIDATE_ENTRY_URL,
-                new HttpEntity<>(validateEntryDto.toString(), headers),
-                String.class
-        );
-        if (response.getStatusCode().is2xxSuccessful()) return true;
-        if (response.getStatusCode().is4xxClientError()) return false;
-        throw new InvalidPathException(response.getBody());
+        ResponseEntity<String> response;
+		try {
+			response = new RestTemplate().postForEntity(
+			        ImageProcessingConstants.VALIDATE_ENTRY_URL,
+			        new HttpEntity<>(new ObjectMapper().writeValueAsString(validateEntryDto), headers),
+			        String.class
+			);
+			this.response = response.getBody();
+			if (response.getStatusCode().is2xxSuccessful()) {
+				return true;
+			}
+			if (response.getStatusCode().is4xxClientError()) {
+				return false;
+			}
+			throw new InvalidPathException(this.response);
+		} catch (RestClientException | JsonProcessingException e) {
+			throw new FlaskException();
+		}        
     }
 }

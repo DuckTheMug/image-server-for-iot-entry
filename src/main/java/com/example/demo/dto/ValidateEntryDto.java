@@ -12,12 +12,4 @@ import lombok.Setter;
 public class ValidateEntryDto {
     private String img;
     private String db;
-
-    @Override
-    public String toString() {
-        return '{' +
-                "\"img\":\"" + this.getImg() + '\"' +
-                ",\"db\":\"" + this.getDb() + '\"' +
-                '}';
-    }
 }
