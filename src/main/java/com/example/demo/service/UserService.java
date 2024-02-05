@@ -51,26 +51,22 @@ public class UserService {
         return userRepo.findByName(name);
     }
 
-    private void validate(@NonNull String location) {
+    private void validate(@NonNull String location) throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         NewUserDto newUserDto = new NewUserDto(location);
         ResponseEntity<String> response;
-		try {
-			response = new RestTemplate().postForEntity(
-			        ImageProcessingConstants.VALIDATE_NEW_USER_URL,
-			        new HttpEntity<>(new ObjectMapper().writeValueAsString(newUserDto), headers),
-			        String.class
-			);
-			this.response = response.getBody();
-			if (response.getStatusCode().is4xxClientError()) {
-				if (Objects.equals(this.response, "User already exists."))
-					throw new UserAlreadyExistsException(this.response);
-				throw new InvalidImageInputException(this.response);
-			}
-			if (response.getStatusCode().is5xxServerError()) throw new InvalidPathException(this.response);
-		} catch (RestClientException | JsonProcessingException e) {
-			throw new FlaskException(e);
+		response = new RestTemplate().postForEntity(
+		        ImageProcessingConstants.VALIDATE_NEW_USER_URL,
+		        new HttpEntity<>(new ObjectMapper().writeValueAsString(newUserDto), headers),
+		        String.class
+		);
+		this.response = response.getBody();
+		if (response.getStatusCode().is4xxClientError()) {
+			if (Objects.equals(this.response, "User already exists."))
+				throw new UserAlreadyExistsException(this.response);
+			throw new InvalidImageInputException(this.response);
 		}
+		if (response.getStatusCode().is5xxServerError()) throw new InvalidPathException(this.response);
     }
 }

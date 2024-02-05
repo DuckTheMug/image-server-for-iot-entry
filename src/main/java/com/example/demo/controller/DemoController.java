@@ -7,6 +7,8 @@ import com.example.demo.service.EntryService;
 import com.example.demo.service.ImageService;
 import com.example.demo.service.StorageService;
 import com.example.demo.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
@@ -81,7 +83,7 @@ public class DemoController {
     @ExceptionHandler({
             StorageException.class,
             InvalidPathException.class,
-            FlaskException.class
+            JsonProcessingException.class
     })
     public ResponseEntity<String> handleInternalException(@NonNull RuntimeException e) {
         storageService.flushPath();

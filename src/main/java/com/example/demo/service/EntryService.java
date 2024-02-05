@@ -37,27 +37,23 @@ public class EntryService {
         return entryRepo.save(entry);
     }
 
-    private @NonNull Boolean validate(@NonNull String entry) {
+    private @NonNull Boolean validate(@NonNull String entry) throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         ValidateEntryDto validateEntryDto = new ValidateEntryDto(entry, PathConstants.ENTRY_PATH);
         ResponseEntity<String> response;
-		try {
-			response = new RestTemplate().postForEntity(
-			        ImageProcessingConstants.VALIDATE_ENTRY_URL,
-			        new HttpEntity<>(new ObjectMapper().writeValueAsString(validateEntryDto), headers),
-			        String.class
-			);
-			this.response = response.getBody();
-			if (response.getStatusCode().is2xxSuccessful()) {
-				return true;
-			}
-			if (response.getStatusCode().is4xxClientError()) {
-				return false;
-			}
-			throw new InvalidPathException(this.response);
-		} catch (RestClientException | JsonProcessingException e) {
-			throw new FlaskException();
-		}        
+		response = new RestTemplate().postForEntity(
+		        ImageProcessingConstants.VALIDATE_ENTRY_URL,
+		        new HttpEntity<>(new ObjectMapper().writeValueAsString(validateEntryDto), headers),
+		        String.class
+		);
+		this.response = response.getBody();
+		if (response.getStatusCode().is2xxSuccessful()) {
+			return true;
+		}
+		if (response.getStatusCode().is4xxClientError()) {
+			return false;
+		}
+		throw new InvalidPathException(this.response);
     }
 }
