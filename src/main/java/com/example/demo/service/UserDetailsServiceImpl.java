@@ -25,11 +25,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Master master = masterRepo.findByUsername(email);
 		if (master == null) {
-			throw new UsernameNotFoundException("Can't find the user");
+			throw new UsernameNotFoundException("Can't find the user.");
 		}
 		Set<GrantedAuthority> auth = master.getRole().stream().map(role
 				-> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toSet());
 		return new User(master.getEmail(), master.getPassword(), auth);
 	}
-
 }

@@ -25,7 +25,7 @@ public class DemoController {
     private final UserService userService;
     private final StorageService storageService;
 
-    @PostMapping("/api/new_user")
+    @PostMapping("/api/master/new_user")
     public ResponseEntity<String> newUser(@NonNull @RequestParam MultipartFile file, @NonNull @RequestParam String name) {
         try {
             storageService.setRootPath(storageService.getRootPath().resolve(PathConstants.USER_PATH));
@@ -38,7 +38,7 @@ public class DemoController {
         }
     }
 
-    @DeleteMapping("/api/delete_user")
+    @DeleteMapping("/api/master/delete_user")
     public ResponseEntity<String> deleteUser(@NonNull @RequestParam String name) {
         try {
             Image toBeDeleted = userService.findUserByName(name).getImage();
