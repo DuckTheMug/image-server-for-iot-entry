@@ -11,11 +11,4 @@ import lombok.Setter;
 @AllArgsConstructor
 public class NewUserDto {
     private String img;
-
-    @Override
-    public String toString() {
-        return "{" +
-                "\"img\":\"" + this.getImg() + '\"' +
-                '}';
-    }
 }

@@ -60,10 +60,12 @@ def validate_new_user():
         if not os.path.exists(img):
             return flask.Response(response='Image path doesn\'t exist.', status=status.INTERNAL_SERVER_ERROR)
 
+        root: str = os.path.dirname(img)
+
         face: int = DeepFace.extract_faces(img).__len__()
 
         # clear cache if exists
-        cache: str = os.path.join(os.path.dirname(img), "representations_vgg_face.pkl")
+        cache: str = os.path.join(root, "representations_vgg_face.pkl")
         if os.path.exists(cache):
             os.remove(cache)
 
@@ -72,7 +74,7 @@ def validate_new_user():
             return flask.Response(response='Invalid image input.', status=status.BAD_REQUEST)
 
         # using find itself to generate the cache & check if the user has already existed
-        if DeepFace.find(os.path.dirname(img), img, silent=True).__len__() > 0:
+        if DeepFace.find(img_path=img, db_path=root, silent=True).__len__() > 0:
             return flask.Response(response='User already exists.', status=status.BAD_REQUEST)
 
         return flask.Response(response='Image processed successfully.', status=status.OK)
