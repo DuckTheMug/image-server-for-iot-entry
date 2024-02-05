@@ -80,8 +80,12 @@ public class DemoController {
     }
     @ExceptionHandler({
             StorageException.class,
+<<<<<<< HEAD
             InvalidPathException.class,
             FlaskException.class
+=======
+            InvalidPathException.class
+>>>>>>> 96d786a52b862e17f4db7e196e61e21dc91d350f
     })
     public ResponseEntity<String> handleInternalException(@NonNull RuntimeException e) {
         storageService.flushPath();
