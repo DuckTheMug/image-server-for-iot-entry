@@ -35,7 +35,7 @@ public class UserService {
     @Getter
     private String response;
     
-    public void newUser(@NonNull Image image) {
+    public void newUser(@NonNull Image image) throws JsonProcessingException {
         validate(image.getLocation());
         User user = new User();
         user.setName(FilenameUtils.getBaseName(image.getLocation()));

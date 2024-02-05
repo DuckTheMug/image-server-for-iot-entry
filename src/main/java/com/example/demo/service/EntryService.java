@@ -30,7 +30,7 @@ public class EntryService {
     @Getter
     private String response;
     
-    public Entry newEntry(@NonNull Image image) {
+    public Entry newEntry(@NonNull Image image) throws JsonProcessingException {
         Entry entry = new Entry();
         entry.setImage(image);
         entry.setAccessGranted(validate(image.getLocation()));
