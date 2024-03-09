@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.exception.*;
 import com.example.demo.constant.PathConstants;
 import com.example.demo.model.Image;
-import com.example.demo.service.EntryService;
 import com.example.demo.service.ImageService;
 import com.example.demo.service.StorageService;
 import com.example.demo.service.UserService;
@@ -19,8 +18,7 @@ import java.io.IOException;
 
 @RestController
 @AllArgsConstructor
-public class DemoController {
-    private final EntryService entryService;
+public class UserController {
     private final ImageService imageService;
     private final UserService userService;
     private final StorageService storageService;
@@ -49,42 +47,5 @@ public class DemoController {
         } catch (NullPointerException e) {
             throw new UserDoesNotExistException("User doesn't exist.", e);
         }
-    }
-
-    @PostMapping("/api/new_entry")
-    public ResponseEntity<String> newEntry(@NonNull @RequestParam MultipartFile file) {
-        try {
-            storageService.setRootPath(storageService.getRootPath().resolve(PathConstants.ENTRY_PATH));
-            storageService.store(file, null);
-            Boolean accessGranted = entryService.newEntry(imageService.store(PathConstants.ENTRY_PATH + storageService.getRecentFileName(), file.getBytes())).getAccessGranted();
-            if (accessGranted) {
-                // Send POST request to ESP32-CAM
-            } else {
-                // Send POST request to ESP32-CAM
-            }
-            storageService.flushPath();
-            return ResponseEntity.status(HttpStatus.OK).body("Register new entry successfully.");
-        } catch (IOException e) {
-            throw new StorageException("Failed to store file.", e);
-        }
-    }
-
-    @ExceptionHandler({
-            IllegalFileTypeException.class,
-            InvalidImageInputException.class,
-            UserAlreadyExistsException.class,
-            UserDoesNotExistException.class
-    })
-    public ResponseEntity<String> handleIllegalFileException(@NonNull RuntimeException e) {
-        storageService.flushPath();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
-    @ExceptionHandler({
-            StorageException.class,
-            InvalidPathException.class,
-    })
-    public ResponseEntity<String> handleInternalException(@NonNull RuntimeException e) {
-        storageService.flushPath();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }

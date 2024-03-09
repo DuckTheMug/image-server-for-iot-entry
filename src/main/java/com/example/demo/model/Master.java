@@ -2,27 +2,25 @@ package com.example.demo.model;
 
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Table(schema = "master")
+@SQLDelete(sql = "UPDATE master SET deleted = true WHERE id = ?")
+@FilterDef(name = "deletedMasterFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@Filter(name = "deletedMasterFilter", condition = "deleted = :isDeleted")
 public class Master {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,4 +44,9 @@ public class Master {
 	@JoinTable(joinColumns = @JoinColumn(referencedColumnName = "id"),
 	inverseJoinColumns = @JoinColumn(referencedColumnName = "id"))
 	private Set<Role> role;
+
+	@Column(name = "deleted", nullable = false)
+	@NonNull
+	@NotEmpty
+	private Boolean deleted = Boolean.FALSE;
 }

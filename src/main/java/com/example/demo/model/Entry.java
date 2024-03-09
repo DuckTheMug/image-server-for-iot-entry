@@ -1,19 +1,23 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.*;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.Set;
-
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(schema = "entry")
+@SQLDelete(sql = "UPDATE entry SET deleted = true WHERE id = ?")
+@FilterDef(name = "deletedEntryFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@Filter(name = "deletedEntryFilter", condition = "deleted = :isDeleted")
 public class Entry {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,4 +33,9 @@ public class Entry {
     @NonNull
     @Column(name = "access_granted", nullable = false)
     private Boolean accessGranted;
+
+    @Column(name = "deleted", nullable = false)
+    @NonNull
+    @NotEmpty
+    private Boolean deleted = Boolean.FALSE;
 }

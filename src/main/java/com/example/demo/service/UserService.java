@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.constant.ImageProcessingConstants;
 import com.example.demo.dto.NewUserDto;
-import com.example.demo.exception.FlaskException;
 import com.example.demo.exception.InvalidImageInputException;
 import com.example.demo.exception.InvalidPathException;
 import com.example.demo.exception.UserAlreadyExistsException;
@@ -12,23 +11,22 @@ import com.example.demo.repo.UserRepo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashSet;
 import java.util.Objects;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepo userRepo;
 

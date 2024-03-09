@@ -10,16 +10,22 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.*;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Getter
+@Setter
 @Table(schema = "role")
+@SQLDelete(sql = "UPDATE role SET deleted = true WHERE id = ?")
+@FilterDef(name = "deletedRoleFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@Filter(name = "deletedRoleFilter", condition = "deleted = :isDeleted")
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,4 +37,9 @@ public class Role {
 	@NonNull
 	@Enumerated(EnumType.STRING)
 	private RoleName name;
+
+	@Column(name = "deleted", nullable = false)
+	@NonNull
+	@NotEmpty
+	private Boolean deleted = Boolean.FALSE;
 }

@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.constant.ImageProcessingConstants;
 import com.example.demo.constant.PathConstants;
 import com.example.demo.dto.ValidateEntryDto;
-import com.example.demo.exception.FlaskException;
 import com.example.demo.exception.InvalidPathException;
 import com.example.demo.model.Entry;
 import com.example.demo.model.Image;
@@ -11,30 +10,27 @@ import com.example.demo.repo.EntryRepo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EntryService {
     private final EntryRepo entryRepo;
 
     @Getter
     private String response;
     
-    public Entry newEntry(@NonNull Image image) throws JsonProcessingException {
+    public void newEntry(@NonNull Image image) throws JsonProcessingException {
         Entry entry = new Entry();
         entry.setImage(image);
         entry.setAccessGranted(validate(image.getLocation()));
-        return entryRepo.save(entry);
+        entryRepo.save(entry);
     }
 
     private @NonNull Boolean validate(@NonNull String entry) throws JsonProcessingException {

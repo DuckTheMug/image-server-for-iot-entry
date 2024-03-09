@@ -1,20 +1,26 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.*;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.relational.core.mapping.Table;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(schema = "image")
+@SQLDelete(sql = "UPDATE image SET deleted = true WHERE id = ?")
+@FilterDef(name = "deletedImageFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@Filter(name = "deletedImageFilter", condition = "deleted = :isDeleted")
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,4 +40,9 @@ public class Image {
     @Column(name = "image", length = Integer.MAX_VALUE, nullable = false)
     @Lob
     private byte @NonNull [] image;
+
+    @Column(name = "deleted", nullable = false)
+    @NonNull
+    @NotEmpty
+    private Boolean deleted = Boolean.FALSE;
 }
