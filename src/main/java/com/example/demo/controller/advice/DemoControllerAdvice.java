@@ -8,10 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
 @AllArgsConstructor
-public class DemoControllerAdvice {
+public class DemoControllerAdvice extends ResponseEntityExceptionHandler {
     private final StorageService storageService;
 
     @ExceptionHandler({
