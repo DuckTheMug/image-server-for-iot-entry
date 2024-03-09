@@ -15,7 +15,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(schema = "entry")
-@SQLDelete(sql = "UPDATE entry SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE DEMO.ENTRY SET deleted = TRUE WHERE ID = ?")
 @FilterDef(name = "deletedEntryFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
 @Filter(name = "deletedEntryFilter", condition = "deleted = :isDeleted")
 public class Entry {
@@ -33,6 +33,10 @@ public class Entry {
     @NonNull
     @Column(name = "access_granted", nullable = false)
     private Boolean accessGranted;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "deleted", nullable = false)
     @NonNull

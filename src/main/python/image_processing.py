@@ -37,8 +37,8 @@ def validate_entry():
 
         result: list = DeepFace.find(img_path=img, db_path=db, silent=True)
         if result.__len__() > 0:
-            return flask.Response(response=os.path.relpath(os.path.normpath(str(result[0].values[0][0])),
-                                                           os.getcwd()), status=status.OK)
+            return flask.Response(response=os.path.relpath(os.path.normpath(str(result[0].values[0][0])), os.getcwd()),
+                                  status=status.OK)
         else:
             return flask.Response(response='No match found.', status=status.BAD_REQUEST)
     else:

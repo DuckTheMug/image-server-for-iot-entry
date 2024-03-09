@@ -23,7 +23,7 @@ import org.hibernate.annotations.SQLDelete;
 @Getter
 @Setter
 @Table(schema = "role")
-@SQLDelete(sql = "UPDATE role SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE DEMO.ROLE SET DELETED = true WHERE ID = ?")
 @FilterDef(name = "deletedRoleFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
 @Filter(name = "deletedRoleFilter", condition = "deleted = :isDeleted")
 public class Role {

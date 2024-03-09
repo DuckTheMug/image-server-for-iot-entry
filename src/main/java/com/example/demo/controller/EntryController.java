@@ -28,7 +28,9 @@ public class EntryController {
         try {
             storageService.setRootPath(storageService.getRootPath().resolve(PathConstants.ENTRY_PATH));
             storageService.store(file, null);
-            entryService.newEntry(imageService.store(PathConstants.ENTRY_PATH + storageService.getRecentFileName(), file.getBytes()));
+            entryService.newEntry(imageService.store(
+                    PathConstants.ENTRY_PATH + storageService.getRecentFileName(), file.getBytes()
+            ));
             storageService.flushPath();
             return ResponseEntity.status(HttpStatus.OK).body("Register new entry successfully.");
         } catch (IOException e) {

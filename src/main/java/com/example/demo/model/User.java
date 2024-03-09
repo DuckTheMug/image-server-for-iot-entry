@@ -18,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(schema = "user")
-@SQLDelete(sql = "update user set deleted = true where id = ?")
+@SQLDelete(sql = "UPDATE DEMO.USER SET DELETED = TRUE WHERE ID = ?")
 @FilterDef(name = "deletedUserFilter", parameters = @ParamDef(name = "deleted", type = Boolean.class))
 @Filter(name = "deletedUserFilter", condition = "deleted = :deleted")
 public class User {
@@ -36,12 +36,11 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @NonNull
     @JoinColumn(name = "image_id", referencedColumnName = "id", nullable = false, unique = true)
+
     private Image image;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "user_entry",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "entry_id")})
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
+            orphanRemoval = true, targetEntity = Entry.class,cascade = CascadeType.ALL)
     private Set<Entry> entries = new HashSet<>();
 
     @Column(name = "deleted", nullable = false)

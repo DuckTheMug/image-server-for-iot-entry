@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(schema = "image")
-@SQLDelete(sql = "UPDATE image SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE DEMO.IMAGE SET deleted = TRUE WHERE ID = ?")
 @FilterDef(name = "deletedImageFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
 @Filter(name = "deletedImageFilter", condition = "deleted = :isDeleted")
 public class Image {

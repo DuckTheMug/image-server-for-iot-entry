@@ -18,7 +18,7 @@ import org.hibernate.annotations.SQLDelete;
 @NoArgsConstructor
 @Getter
 @Table(schema = "master")
-@SQLDelete(sql = "UPDATE master SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE DEMO.MASTER SET DELETED = TRUE WHERE ID = ?")
 @FilterDef(name = "deletedMasterFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
 @Filter(name = "deletedMasterFilter", condition = "deleted = :isDeleted")
 public class Master {
