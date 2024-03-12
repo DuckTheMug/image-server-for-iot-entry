@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
@@ -40,6 +39,5 @@ public class Role {
 
 	@Column(name = "deleted", nullable = false)
 	@NonNull
-	@NotEmpty
 	private Boolean deleted = Boolean.FALSE;
 }

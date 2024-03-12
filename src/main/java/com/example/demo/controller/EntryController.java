@@ -10,7 +10,8 @@ import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +25,7 @@ public class EntryController {
     private final ImageService imageService;
 
     @PostMapping("/api/master/new_entry")
-    public ResponseEntity<String> newEntry(@NonNull @RequestParam MultipartFile file) {
+    public @ResponseBody ResponseEntity<String> newEntry(@NonNull @RequestPart MultipartFile file) {
         try {
             storageService.setRootPath(storageService.getRootPath().resolve(PathConstants.ENTRY_PATH));
             storageService.store(file, null);

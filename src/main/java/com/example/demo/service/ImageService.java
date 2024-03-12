@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.time.LocalDateTime;
 
 @Service
@@ -22,9 +21,5 @@ public class ImageService {
     }
     public void deleteImage(@NonNull Image image) {
         imageRepo.delete(image);
-    }
-
-    public Image getImage(@NonNull String location) {
-        return imageRepo.findByLocation(location);
     }
 }

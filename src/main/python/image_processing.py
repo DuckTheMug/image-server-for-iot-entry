@@ -5,10 +5,10 @@ import flask
 import json
 
 # line for testing
-# os.chdir(os.path.join(os.path.dirname(os.path.abspath(__name__)), '..', '..', '..', 'images'))
+os.chdir(os.path.join(os.path.dirname(os.path.abspath(__name__)), '..', '..', '..', 'images'))
 
 # change the working directory to the image folder for image processing
-os.chdir(os.path.join(os.path.dirname(os.path.abspath(__name__)), 'images'))
+# os.chdir(os.path.join(os.path.dirname(os.path.abspath(__name__)), 'images'))
 
 # init deepface model
 DeepFace.build_model("VGG-Face")
@@ -36,10 +36,10 @@ def validate_entry():
                                   status=status.INTERNAL_SERVER_ERROR)
 
         result: list = DeepFace.find(img_path=img, db_path=db, silent=True)
-        if result.__len__() > 0:
+        try:
             return flask.Response(response=os.path.relpath(os.path.normpath(str(result[0].values[0][0])), os.getcwd()),
                                   status=status.OK)
-        else:
+        except IndexError:
             return flask.Response(response='No match found.', status=status.BAD_REQUEST)
     else:
         return flask.Response(response='Invalid content type.', status=status.UNSUPPORTED_MEDIA_TYPE)
@@ -74,7 +74,7 @@ def validate_new_user():
             return flask.Response(response='Invalid image input.', status=status.BAD_REQUEST)
 
         # using find itself to generate the cache & check if the user has already existed
-        if DeepFace.find(img_path=img, db_path=root, silent=True).__len__() > 0:
+        if DeepFace.find(img_path=img, db_path=root, silent=True).__len__() > 1:
             return flask.Response(response='User already exists.', status=status.BAD_REQUEST)
 
         return flask.Response(response='Image processed successfully.', status=status.OK)

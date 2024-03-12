@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.constant.PathConstants;
 import com.example.demo.exception.IllegalFileTypeException;
 import com.example.demo.exception.StorageException;
 import com.example.demo.exception.UserAlreadyExistsException;
@@ -29,7 +30,7 @@ public class StorageService {
     @Getter
     private String recentFileName;
 
-    private String defaultPath;
+    private final String defaultPath;
 
     public StorageService(@NonNull @Autowired Storage storage) {
         if (storage.getPath().isBlank())
@@ -40,7 +41,6 @@ public class StorageService {
             try {
                 this.init();
             } catch (StorageException e) {
-                this.defaultPath = null;
                 this.rootPath = null;
                 throw e;
             }
@@ -79,9 +79,15 @@ public class StorageService {
         }
     }
 
-    public void delete(String location) {
+    public void softDelete(String location) {
         try {
-            Files.deleteIfExists(this.rootPath.resolve(location));
+            Path deleteDir = this.rootPath.resolve(FilenameUtils.getPath(location))
+                    .resolve(PathConstants.DELETED_DIRECTORY);
+            if (!Files.exists(deleteDir)) {
+                Files.createDirectories(deleteDir);
+            }
+            Files.move(this.rootPath.resolve(location),
+                    deleteDir.resolve(RandomFileNameUtil.randomFileName(FilenameUtils.getExtension(location))));
         } catch (IOException e) {
             throw new StorageException("Failed to delete file.", e);
         }

@@ -34,9 +34,7 @@ public class User {
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @NonNull
-    @JoinColumn(name = "image_id", referencedColumnName = "id", nullable = false, unique = true)
-
+    @JoinColumn(name = "image_id", referencedColumnName = "id", unique = true)
     private Image image;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
@@ -45,6 +43,5 @@ public class User {
 
     @Column(name = "deleted", nullable = false)
     @NonNull
-    @NotEmpty
     private Boolean deleted = Boolean.FALSE;
 }
