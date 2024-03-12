@@ -32,7 +32,7 @@ public class EntryController {
             entryService.newEntry(imageService.store(
                     PathConstants.ENTRY_PATH + storageService.getRecentFileName(), file.getBytes()
             ));
-            storageService.flushPath();
+            storageService.flushPath(Boolean.FALSE);
             return ResponseEntity.status(HttpStatus.OK).body("Register new entry successfully.");
         } catch (IOException e) {
             throw new StorageException("Failed to store file.", e);

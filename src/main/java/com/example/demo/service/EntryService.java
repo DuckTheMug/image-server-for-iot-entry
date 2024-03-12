@@ -18,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -44,14 +45,19 @@ public class EntryService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         ValidateEntryDto validateEntryDto = new ValidateEntryDto(entry, PathConstants.USER_PATH);
         ResponseEntity<String> response;
-		response = new RestTemplate().postForEntity(
-		        ImageProcessingConstants.VALIDATE_ENTRY_URL,
-		        new HttpEntity<>(new ObjectMapper().writeValueAsString(validateEntryDto), headers),
-		        String.class
-		);
-		this.response = response.getBody();
-		if (response.getStatusCode().is2xxSuccessful()) return true;
-		if (response.getStatusCode().is4xxClientError()) return false;
-		throw new InvalidPathException(this.response);
+        try {
+            response = new RestTemplate().postForEntity(
+                    ImageProcessingConstants.VALIDATE_ENTRY_URL,
+                    new HttpEntity<>(new ObjectMapper().writeValueAsString(validateEntryDto), headers),
+                    String.class
+            );
+            this.response = response.getBody();
+		    return true;
+        } catch (RestClientException e) {
+            assert !e.getMessage().contains("500") : "Invalid path.";
+            return false;
+        } catch (AssertionError e) {
+            throw new InvalidPathException(e);
+        }
     }
 }

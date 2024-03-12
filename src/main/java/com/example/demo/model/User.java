@@ -34,7 +34,7 @@ public class User {
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id", referencedColumnName = "id", unique = true)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
     private Image image;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,

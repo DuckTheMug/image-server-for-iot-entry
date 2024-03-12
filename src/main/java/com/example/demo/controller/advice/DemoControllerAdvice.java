@@ -22,7 +22,7 @@ public class DemoControllerAdvice extends ResponseEntityExceptionHandler {
             UserDoesNotExistException.class
     })
     public ResponseEntity<String> handleIllegalFileException(@NonNull RuntimeException e) {
-        storageService.flushPath();
+        storageService.flushPath(Boolean.TRUE);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
     @ExceptionHandler({
@@ -30,7 +30,7 @@ public class DemoControllerAdvice extends ResponseEntityExceptionHandler {
             InvalidPathException.class
     })
     public ResponseEntity<String> handleInternalException(@NonNull RuntimeException e) {
-        storageService.flushPath();
+        storageService.flushPath(Boolean.TRUE);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }

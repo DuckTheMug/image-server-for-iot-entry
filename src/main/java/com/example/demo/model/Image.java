@@ -33,7 +33,7 @@ public class Image {
     private LocalDateTime dateTime;
 
     @NonNull
-    @Column(name = "location", nullable = false, unique = true)
+    @Column(name = "location", nullable = false)
     private String location;
 
     @Column(name = "image", length = Integer.MAX_VALUE, nullable = false)

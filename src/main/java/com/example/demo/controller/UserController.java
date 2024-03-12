@@ -33,7 +33,7 @@ public class UserController {
             userService.newUser(imageService.store(
                     PathConstants.USER_PATH + storageService.getRecentFileName(), file.getBytes()
             ), name);
-            storageService.flushPath();
+            storageService.flushPath(Boolean.FALSE);
             return ResponseEntity.status(HttpStatus.OK).body("Register new user successfully.");
         } catch (IOException e) {
             throw new StorageException("Failed to store file.", e);
