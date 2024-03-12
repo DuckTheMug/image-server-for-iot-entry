@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
@@ -43,6 +42,5 @@ public class Image {
 
     @Column(name = "deleted", nullable = false)
     @NonNull
-    @NotEmpty
     private Boolean deleted = Boolean.FALSE;
 }

@@ -10,6 +10,7 @@ import com.example.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,12 +24,15 @@ public class UserController {
     private final UserService userService;
     private final StorageService storageService;
 
-    @PostMapping("/api/master/new_user")
-    public ResponseEntity<String> newUser(@NonNull @RequestParam MultipartFile file, @NonNull @RequestParam String name) {
+    @PostMapping(value = "/api/master/new_user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public @ResponseBody ResponseEntity<String> newUser(@NonNull @RequestPart MultipartFile file,
+                                                        @NonNull @RequestPart String name) {
         try {
             storageService.setRootPath(storageService.getRootPath().resolve(PathConstants.USER_PATH));
             storageService.store(file, name);
-            userService.newUser(imageService.store(PathConstants.USER_PATH + storageService.getRecentFileName(), file.getBytes()));
+            userService.newUser(imageService.store(
+                    PathConstants.USER_PATH + storageService.getRecentFileName(), file.getBytes()
+            ), name);
             storageService.flushPath();
             return ResponseEntity.status(HttpStatus.OK).body("Register new user successfully.");
         } catch (IOException e) {
@@ -37,10 +41,10 @@ public class UserController {
     }
 
     @DeleteMapping("/api/master/delete_user")
-    public ResponseEntity<String> deleteUser(@NonNull @RequestParam String name) {
+    public @ResponseBody ResponseEntity<String> deleteUser(@NonNull @RequestBody String name) {
         try {
             Image toBeDeleted = userService.findUserByName(name).getImage();
-            storageService.delete(toBeDeleted.getLocation());
+            storageService.softDelete(toBeDeleted.getLocation());
             imageService.deleteImage(toBeDeleted);
             userService.deleteUser(name);
             return ResponseEntity.status(HttpStatus.OK).body("Delete user successfully.");

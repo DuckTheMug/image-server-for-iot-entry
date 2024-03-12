@@ -34,14 +34,15 @@ public class EntryService {
         Entry entry = new Entry();
         entry.setImage(image);
         entry.setAccessGranted(validate(image.getLocation()));
-        entry.setUser(userRepo.findById(imageRepo.findByLocation(this.response).getId()).orElse(null));
+        imageRepo.findByLocation(this.response).ifPresent(i ->
+                entry.setUser(userRepo.findById(i.getId()).orElse(null)));
         entryRepo.save(entry);
     }
 
     private @NonNull Boolean validate(@NonNull String entry) throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        ValidateEntryDto validateEntryDto = new ValidateEntryDto(entry, PathConstants.ENTRY_PATH);
+        ValidateEntryDto validateEntryDto = new ValidateEntryDto(entry, PathConstants.USER_PATH);
         ResponseEntity<String> response;
 		response = new RestTemplate().postForEntity(
 		        ImageProcessingConstants.VALIDATE_ENTRY_URL,

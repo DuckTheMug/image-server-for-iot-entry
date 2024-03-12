@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -33,16 +32,16 @@ public class UserService {
     @Getter
     private String response;
     
-    public void newUser(@NonNull Image image) throws JsonProcessingException {
+    public void newUser(@NonNull Image image, @NonNull String name) throws JsonProcessingException {
         validate(image.getLocation());
         User user = new User();
-        user.setName(FilenameUtils.getBaseName(image.getLocation()));
+        user.setName(name);
         user.setImage(image);
         user.setEntries(new HashSet<>());
         userRepo.save(user);
     }
     public void deleteUser(@NonNull String name) {
-        userRepo.deleteByName(name);
+        userRepo.delete(userRepo.findByName(name));
     }
 
     public User findUserByName(@NonNull String name) {

@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
@@ -27,7 +26,7 @@ public class Entry {
 
     @NonNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
     private Image image;
 
     @NonNull
@@ -40,6 +39,5 @@ public class Entry {
 
     @Column(name = "deleted", nullable = false)
     @NonNull
-    @NotEmpty
     private Boolean deleted = Boolean.FALSE;
 }

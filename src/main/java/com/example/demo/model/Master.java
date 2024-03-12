@@ -47,6 +47,5 @@ public class Master {
 
 	@Column(name = "deleted", nullable = false)
 	@NonNull
-	@NotEmpty
 	private Boolean deleted = Boolean.FALSE;
 }
