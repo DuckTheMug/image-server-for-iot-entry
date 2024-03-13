@@ -4,9 +4,6 @@ import deepface.DeepFace as DeepFace
 import flask
 import json
 
-# line for testing
-# os.chdir(os.path.join(os.path.dirname(os.path.abspath(__name__)), '..', '..', '..', 'images'))
-
 # change the working directory to the image folder for image processing
 os.chdir(os.path.join(os.path.dirname(os.path.abspath(__name__)), 'images'))
 
