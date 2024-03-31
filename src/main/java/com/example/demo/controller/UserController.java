@@ -1,55 +1,74 @@
 package com.example.demo.controller;
 
+import com.example.demo.constant.AccessPathConstants;
+import com.example.demo.constant.MessageConstants;
 import com.example.demo.exception.*;
 import com.example.demo.constant.PathConstants;
-import com.example.demo.model.Image;
+import com.example.demo.form.NewUserForm;
+import com.example.demo.entity.Image;
 import com.example.demo.service.ImageService;
 import com.example.demo.service.StorageService;
 import com.example.demo.service.UserService;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 
-@RestController
+@Controller
 @AllArgsConstructor
 public class UserController {
     private final ImageService imageService;
     private final UserService userService;
     private final StorageService storageService;
 
-    @PostMapping(value = "/api/master/new_user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public @ResponseBody ResponseEntity<String> newUser(@NonNull @RequestPart MultipartFile file,
-                                                        @NonNull @RequestPart String name) {
+    @PostMapping(value = "/api/master/new-user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String newUser(NewUserForm newUserForm, RedirectAttributes redirectAttributes) {
         try {
             storageService.setRootPath(storageService.getRootPath().resolve(PathConstants.USER_PATH));
-            storageService.store(file, name);
+            storageService.store(newUserForm.getFile(), newUserForm.getName());
             userService.newUser(imageService.store(
-                    PathConstants.USER_PATH + storageService.getRecentFileName(), file.getBytes()
-            ), name);
+                    PathConstants.USER_PATH + storageService.getRecentFileName(), newUserForm.getFile().getBytes()
+            ), newUserForm.getName());
             storageService.flushPath(Boolean.FALSE);
-            return ResponseEntity.status(HttpStatus.OK).body("Register new user successfully.");
         } catch (IOException e) {
             throw new StorageException("Failed to store file.", e);
+        } catch (UserAlreadyExistsException | NotFoundException |
+                 InvalidImageInputException | InvalidPathException |
+                 StorageException e) {
+            storageService.flushPath(Boolean.TRUE);
+            redirectAttributes.addFlashAttribute(MessageConstants.ERROR, e.getMessage());
         }
+        return AccessPathConstants.REDIRECT_NEW_USER;
     }
 
-    @DeleteMapping("/api/master/delete_user")
-    public @ResponseBody ResponseEntity<String> deleteUser(@NonNull @RequestBody String name) {
+    @DeleteMapping("/api/master/delete-user")
+    public String deleteUser(@NonNull @RequestBody Long id, RedirectAttributes redirectAttributes) {
         try {
-            Image toBeDeleted = userService.findUserByName(name).getImage();
+            Image toBeDeleted = userService.findUserById(id).getImage();
             storageService.softDelete(toBeDeleted.getLocation());
             imageService.deleteImage(toBeDeleted);
-            userService.deleteUser(name);
-            return ResponseEntity.status(HttpStatus.OK).body("Delete user successfully.");
-        } catch (NullPointerException e) {
-            throw new UserDoesNotExistException("User doesn't exist.", e);
+            userService.deleteUser(id);
+        } catch (NotFoundException | StorageException e) {
+            storageService.flushPath(Boolean.TRUE);
+            redirectAttributes.addFlashAttribute(MessageConstants.ERROR, e.getMessage());
         }
+        return AccessPathConstants.REDIRECT_USER;
+    }
+
+    @GetMapping("/master/user")
+    public String initUser(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return AccessPathConstants.USER;
+    }
+
+    @GetMapping("/master/new-user")
+    public String initNewUser() {
+        return AccessPathConstants.NEW_USER;
     }
 }

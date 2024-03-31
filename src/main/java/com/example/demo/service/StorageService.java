@@ -5,7 +5,7 @@ import com.example.demo.exception.IllegalFileTypeException;
 import com.example.demo.exception.StorageException;
 import com.example.demo.exception.UserAlreadyExistsException;
 import com.example.demo.constant.AllowedFileTypes;
-import com.example.demo.model.Storage;
+import com.example.demo.entity.Storage;
 import com.example.demo.util.RandomFileNameUtil;
 import lombok.Getter;
 import lombok.NonNull;

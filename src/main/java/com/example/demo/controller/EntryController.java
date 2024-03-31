@@ -24,7 +24,7 @@ public class EntryController {
     private final StorageService storageService;
     private final ImageService imageService;
 
-    @PostMapping("/api/master/new_entry")
+    @PostMapping("/api/master/new-entry")
     public @ResponseBody ResponseEntity<String> newEntry(@NonNull @RequestPart MultipartFile file) {
         try {
             storageService.setRootPath(storageService.getRootPath().resolve(PathConstants.ENTRY_PATH));
@@ -36,6 +36,9 @@ public class EntryController {
             return ResponseEntity.status(HttpStatus.OK).body("Register new entry successfully.");
         } catch (IOException e) {
             throw new StorageException("Failed to store file.", e);
+        } catch (StorageException e) {
+            storageService.flushPath(Boolean.TRUE);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

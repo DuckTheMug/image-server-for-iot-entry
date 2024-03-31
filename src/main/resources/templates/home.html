@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title th:text="#{home.title}"></title>
+</head>
+<body data-bs-theme="dark">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div class="container-fluid vh-100 d-flex justify-content-center align-items-center mt-5 pt-5">
+        <div class="bg-gradient w-75 h-100">
+            <div class="card">
+                <div class="card-header text-bg-primary border-0 h4" th:text="#{home.welcome}"></div>
+                <div class="card-body">
+                    <div class="card py-1 my-2">
+                        <div class="ps-2 row align-items-center">
+                            <i class="fa-solid fa-circle-question fa-spin col-auto"></i>
+                            <h5 class="col-auto mb-0" th:text="#{home.howto}"></h5>
+                        </div>
+                    </div>
+                    <div class="card py-1 my-2">
+                        <div class="ps-5 py-3 row align-items-center">
+                            <div class="row py-2">
+                                <span class="col-auto mb-0">
+                                    <i class="fa-solid fa-caret-right fa-fw"></i>
+                                    Click on the
+                                    <button class="btn btn-primary mx-2" th:href="@{/master/user}">
+                                        <i class="fa-solid fa-user fa-fw"></i>
+                                        <span class="btn-title" th:text="#{common.user}"></span>
+                                    </button>
+                                    button to view or edit the users.
+                                </span>
+                            </div>
+                            <div class="row py-2">
+                                <span class="col-auto mb-0">
+                                    <i class="fa-solid fa-caret-right fa-fw"></i>
+                                    Click on the
+                                    <button class="btn btn-primary mx-2" th:href="@{/master/entry}">
+                                        <i class="fa-solid fa-file-lines"></i>
+                                        <span class="btn-title" th:text="#{common.entry}"></span>
+                                    </button>
+                                    button to view the entries.
+                                </span>
+                            </div>
+                            <div class="row py-2">
+                                <span class="col-auto mb-0">
+                                    <i class="fa-solid fa-caret-right fa-fw"></i>
+                                    Click on the
+                                    <button class="btn btn-primary mx-2" th:href="@{/master/lock}">
+                                        <i class="fa-solid fa-lock"></i>
+                                        <span class="btn-title" th:text="#{common.lock}"></span>
+                                    </button>
+                                    button to view or edit the locks.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{fragments/toast :: toast}"></div>
+</body>
+</html>

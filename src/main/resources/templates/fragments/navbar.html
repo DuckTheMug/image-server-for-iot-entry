@@ -1,0 +1,30 @@
+<div th:fragment="navbar">
+    <nav class="navbar navbar-expand bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand active fs-2 text-white"
+               aria-current="page" th:href="@{/master}" th:text="#{nav.appName}"></a>
+            <div>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-5 align-items-center">
+                    <li class="nav-item mx-2">
+                        <a class="nav-link text-white hvr-bob" th:href="@{/master/user}">
+                            <i class="fa-solid fa-user"></i>
+                            <span class="btn-title" th:text="#{common.user}"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link text-white hvr-bob" th:href="@{/master/entry}">
+                            <i class="fa-solid fa-file-lines"></i>
+                            <span class="btn-title" th:text="#{common.entry}"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link text-white hvr-bob" th:href="@{/master/lock}">
+                            <i class="fa-solid fa-lock"></i>
+                            <span class="btn-title" th:text="#{common.lock}"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>

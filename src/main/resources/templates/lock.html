@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <script th:src="@{/js/lock.js}"></script>
+    <title th:text="#{common.lock}"></title>
+</head>
+<body data-bs-theme="dark">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div class="container-fluid vh-100 d-flex justify-content-center align-items-center mt-5 pt-5">
+        <div class="bg-gradient w-75 h-100">
+            <div th:replace="~{fragments/msg-ajax}"></div>
+            <div class="card">
+                <div class="card-header text-bg-primary border-0 h4" th:text="#{common.search}"></div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-1"></div>
+                        <div class="form-check-inline col-auto">
+                            <label class="form-check-label h5" for="searchInput" th:text="#{lock.name}"></label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" id="searchInput" type="text"/>
+                            <div id="searchAction" th:attr="data-action=@{/master/lock/doSearch}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header text-bg-primary border-0 h4" th:text="#{lock.list}"></div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="text-center align-middle">
+                                    <th class="col-auto">
+                                        <label for="checkAll"></label>
+                                        <input class="form-check-input" type="checkbox" id="checkAll"/>
+                                    </th>
+                                    <th class="col-6 text-start" th:text="#{lock.name}"></th>
+                                    <th class="col-auto" th:text="#{lock.isOpen}"></th>
+                                    <th class="col-auto" th:text="#{common.action}"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="lockList">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer border-0 d-flex justify-content-end">
+                    <button class="btn btn-primary mx-2" type="button">
+                        <i class="fa fa-plus"></i>
+                        <span class="btn-title" th:text="#{common.add}"></span>
+                    </button>
+                    <button class="btn btn-primary mx-2" type="button">
+                        <i class="fa fa-edit"></i>
+                        <span class="btn-title" th:text="#{common.edit}"></span>
+                    </button>
+                    <button class="btn btn-danger ms-2" type="button">
+                        <i class="fa fa-trash"></i>
+                        <span class="btn-title" th:text="#{common.delete}"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{fragments/toast :: toast}"></div>
+</body>
+</html>

@@ -7,7 +7,7 @@ import json
 # change the working directory to the image folder for image processing
 os.chdir(os.path.join(os.path.dirname(os.path.abspath(__name__)), 'images'))
 
-# init deepface model
+# init deepface entity
 DeepFace.build_model("VGG-Face")
 
 app = flask.Flask(__name__)
