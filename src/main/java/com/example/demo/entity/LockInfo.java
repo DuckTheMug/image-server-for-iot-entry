@@ -39,7 +39,7 @@ public class LockInfo {
             orphanRemoval = true, targetEntity = User.class)
     private Set<User> users = new HashSet<>();
 
-    @Column(name = "deleted", nullable = false, columnDefinition = "boolean default false")
+    @Column(name = "deleted", nullable = false, columnDefinition = "bit default false")
     @NonNull
     private Boolean deleted = Boolean.FALSE;
 }

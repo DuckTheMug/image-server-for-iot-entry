@@ -47,7 +47,7 @@ public class LockInfoController {
         return CommonAjaxResponseDto.success("Lock created.");
     }
 
-    @PostMapping("/doDeleteLock")
+    @PostMapping("/doDelete")
     public @ResponseBody CommonAjaxResponseDto doDeleteLock(LockStateForm lockForm) {
         lockInfoService.deleteLock(lockForm.getLockId());
         return CommonAjaxResponseDto.success("Lock deleted.");
