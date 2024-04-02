@@ -1,9 +1,10 @@
 $(document).ready(function () {
-    // Ajax
+    // Do POST request to the server for the lock data
     function getLockList(ele, param) {
         commonAjaxRequestParams(ele, param, onGetLockListSuccess, null, null, null);
     }
 
+    // Displaying the locks
     function onGetLockListSuccess(ele, data) {
         $("#lockList").empty();
         console.log(data);
@@ -34,12 +35,15 @@ $(document).ready(function () {
         }
     }
 
+    // Get the list of locks on init
     getLockList($('#searchAction'), {lockName: ""});
 
+    // Search event
     $("#searchInput").on("input", function () {
         getLockList($('#searchAction'), {lockName: $(this).val()});
     })
 
+    // Checkbox constraint
     function checkCheckboxes() {
         let allChecked = $('.checkbox:checked').length === $('.checkbox').length;
         $('#check-all').prop('checked', allChecked);
@@ -53,6 +57,7 @@ $(document).ready(function () {
         checkCheckboxes();
     });
 
+    // Delete event
     $('#deleteBtn').click(function () {
         let param = {
             lockId: $('.checkbox:checked').next('.lock-id').val()
@@ -63,4 +68,5 @@ $(document).ready(function () {
     function onDeleteSuccess() {
         getLockList($('#searchAction'), {lockName: $('#searchInput').val()});
     }
+
 });
