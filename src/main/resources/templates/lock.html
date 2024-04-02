@@ -19,8 +19,14 @@
                             <label class="form-check-label h5" for="searchInput" th:text="#{lock.name}"></label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control" id="searchInput" type="text"/>
-                            <div id="searchAction" th:attr="data-action=@{/master/lock/doSearch}"></div>
+                            <div class="input-group">
+                                <input class="form-control" id="searchInput" type="text"/>
+                                <button class="btn btn-outline-secondary" type="button" id="clearBtn">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                                <div class="d-none" id="searchAction"
+                                     th:attr="data-action=@{/master/lock/doSearch}"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

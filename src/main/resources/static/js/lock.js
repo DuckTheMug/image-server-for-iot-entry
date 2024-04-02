@@ -36,12 +36,18 @@ $(document).ready(function () {
     }
 
     // Get the list of locks on init
-    getLockList($('#searchAction'), {lockName: ""});
+    getLockList($('#searchAction'), {lockName: ''});
 
     // Search event
     $("#searchInput").on("input", function () {
         getLockList($('#searchAction'), {lockName: $(this).val()});
-    })
+    });
+
+    // Clear button event
+    $('#clearBtn').click(function () {
+        $('#searchInput').val('');
+        getLockList($('#searchAction'), {lockName: $('#searchInput').val()});
+    });
 
     // Checkbox constraint
     function checkCheckboxes() {
@@ -61,12 +67,13 @@ $(document).ready(function () {
     $('#deleteBtn').click(function () {
         let param = {
             lockId: $('.checkbox:checked').next('.lock-id').val()
-        }
+        };
         commonAjaxRequestParams($(this), param, onDeleteSuccess, null, null, null);
     });
 
     function onDeleteSuccess() {
         getLockList($('#searchAction'), {lockName: $('#searchInput').val()});
     }
+
 
 });
