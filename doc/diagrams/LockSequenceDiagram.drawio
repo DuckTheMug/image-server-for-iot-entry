@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-04-02T03:52:32.630Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="CIP_Pez3SuOyWk32o12O" version="24.2.1" type="github">
+<mxfile host="app.diagrams.net" modified="2024-04-02T04:02:23.126Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="QBuXCIENB44N0ynZD18t" version="24.2.1" type="github">
   <diagram name="Page-1" id="eJk7ZBYUyf_CfmgWEd9V">
     <mxGraphModel dx="989" dy="539" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -86,6 +86,68 @@
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="175" y="293" as="sourcePoint" />
             <mxPoint x="55" y="293" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-40" value="" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" vertex="1" parent="1">
+          <mxGeometry x="40" y="398" width="20" height="182" as="geometry" />
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-41" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="_ypiTypOmbHpvV-yp6MR-40">
+          <mxGeometry x="5" y="60" width="10" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-42" value="&lt;div&gt;View&lt;/div&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="130" y="398" width="100" height="182" as="geometry" />
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-43" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="_ypiTypOmbHpvV-yp6MR-42">
+          <mxGeometry x="45" y="70" width="10" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-46" value="Controller" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="290" y="398" width="100" height="182" as="geometry" />
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-47" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="_ypiTypOmbHpvV-yp6MR-46">
+          <mxGeometry x="45" y="79" width="10" height="61" as="geometry" />
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-50" value="Database" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="450" y="398" width="100" height="182" as="geometry" />
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-51" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="_ypiTypOmbHpvV-yp6MR-50">
+          <mxGeometry x="45" y="90" width="10" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-52" value="View Lock" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="55" y="474" as="sourcePoint" />
+            <mxPoint x="175" y="474" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-53" value="getLocks()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="185" y="484" as="sourcePoint" />
+            <mxPoint x="335" y="484" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-54" value="findAllLock()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="345" y="494" as="sourcePoint" />
+            <mxPoint x="495" y="494" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-55" value="List&amp;lt;LockEnity&amp;gt;" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="495" y="518" as="sourcePoint" />
+            <mxPoint x="345" y="518" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-56" value="List&amp;lt;LockForm&amp;gt;" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="335" y="528" as="sourcePoint" />
+            <mxPoint x="185" y="528" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_ypiTypOmbHpvV-yp6MR-57" value="display" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="175" y="539" as="sourcePoint" />
+            <mxPoint x="55" y="539" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>
