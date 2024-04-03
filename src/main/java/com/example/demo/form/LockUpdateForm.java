@@ -8,5 +8,4 @@ import lombok.Data;
 public class LockUpdateForm {
     private Long lockId;
     private String lockName;
-    private Boolean lockState;
 }

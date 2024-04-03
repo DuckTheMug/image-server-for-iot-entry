@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.LockInfoDto;
 import com.example.demo.entity.LockInfo;
+import com.example.demo.exception.DuplicationException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.repo.LockInfoRepo;
 import lombok.AllArgsConstructor;
@@ -47,23 +48,24 @@ public class LockInfoService {
     }
 
     public void insertNewLock(@NonNull String lockName) {
+        if (lockInfoRepo.countByDeletedIsFalseAndLockNameEquals(lockName) != 0) {
+            throw new DuplicationException("Lock name has already existed");
+        }
         LockInfo lockInfo = new LockInfo();
         lockInfo.setLockName(lockName);
-        lockInfo.setLockState(false);
         lockInfoRepo.save(lockInfo);
     }
 
-    public void deleteLock(@NonNull Long lockId) {
-        lockInfoRepo.deleteById(lockId);
+    public void deleteLock(@NonNull List<Long> lockIds) {
+        for(Long lockId: lockIds) {
+            lockInfoRepo.deleteById(lockId);
+        }
     }
 
-    public void updateLockName(@NonNull Long lockId, @NonNull String lockName, Boolean state) throws NotFoundException {
+    public void updateLockName(@NonNull Long lockId, @NonNull String lockName) throws NotFoundException {
         LockInfo lockInfo = lockInfoRepo.findById(lockId).orElse(null);
         if (lockInfo != null) {
             lockInfo.setLockName(lockName);
-            if (state != null) {
-                lockInfo.setLockState(state);
-            }
             lockInfoRepo.save(lockInfo);
         } else {
             throw new NotFoundException("Lock not found");
@@ -76,7 +78,9 @@ public class LockInfoService {
 
     public List<LockInfoDto> findByLockNameIgnoreCase(String lockName) {
         try {
-            return Objects.requireNonNull(lockInfoRepo.findByLockNameIgnoreCase(lockName).orElse(null)).stream().map((element) -> modelMapper.map(element, LockInfoDto.class)).toList();
+            return Objects.requireNonNull(lockInfoRepo.findByLockNameIgnoreCase(lockName)
+                    .orElse(null)).stream().map((element) -> modelMapper.map(element, LockInfoDto.class))
+                    .toList();
         } catch (NullPointerException e) {
             return null;
         }

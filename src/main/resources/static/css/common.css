@@ -5,3 +5,7 @@
     -ms-user-select: none;
     user-select: none;
 }
+
+.mw-50 {
+    max-width: 50%;
+}

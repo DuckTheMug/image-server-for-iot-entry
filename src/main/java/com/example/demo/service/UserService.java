@@ -71,7 +71,7 @@ public class UserService {
         } catch (RestClientException e) {
             assert !e.getMessage().contains("500") : e;
             assert !e.getMessage().contains("415") : e;
-            throw new UserAlreadyExistsException(e);
+            throw new DuplicationException(e);
         } catch (AssertionError e) {
             throw new InvalidPathException(e);
         }

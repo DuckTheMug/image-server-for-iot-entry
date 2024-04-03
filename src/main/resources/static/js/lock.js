@@ -7,11 +7,10 @@ $(document).ready(function () {
     // Displaying the locks
     function onGetLockListSuccess(ele, data) {
         $("#lockList").empty();
-        console.log(data);
         if (data != null) {
             data.locks.forEach(function (item) {
                 $("#lockList").append(`
-                    <tr class="align-middle text-center">
+                    <tr class="lock align-middle text-center">
                         <td class="col-auto">
                             <input class="form-check-input checkbox" type="checkbox"/>
                             <input type="hidden" class="lock-id" value="${item.lockId}">
@@ -33,6 +32,7 @@ $(document).ready(function () {
                 `);
             });
         }
+        checkCheckboxes();
     }
 
     // Get the list of locks on init
@@ -50,30 +50,61 @@ $(document).ready(function () {
     });
 
     // Checkbox constraint
+    checkCheckboxes();
     function checkCheckboxes() {
         let allChecked = $('.checkbox:checked').length === $('.checkbox').length;
         $('#check-all').prop('checked', allChecked);
     }
 
-    $(document).on('click', '#check-all', function() {
+    $(document).on('click', '#check-all', function () {
         $('.checkbox').prop('checked', $(this).prop('checked'));
     });
 
-    $(document).on('change', '.checkbox',function() {
+    $(document).on('change', '.checkbox',function () {
         checkCheckboxes();
     });
 
     // Delete event
     $('#deleteBtn').click(function () {
+        let lst = [];
+        $('.lock').each(function () {
+            if ($(this).find('td > .checkbox').prop('checked')) {
+                lst.push($(this).find('td > .lock-id').val());
+            }
+        })
         let param = {
-            lockId: $('.checkbox:checked').next('.lock-id').val()
+            lockId: lst
         };
-        commonAjaxRequestParams($(this), param, onDeleteSuccess, null, null, null);
+        commonAjaxRequestParams($(this), param, onDataChangeSuccess, null, null, null);
     });
 
-    function onDeleteSuccess() {
+    function onDataChangeSuccess() {
         getLockList($('#searchAction'), {lockName: $('#searchInput').val()});
     }
 
+    // Add event
+    $('#addBtn').click(function () {
+       $('#addModal').modal('show');
+    });
+
+    // Add form validation
+    $('#addForm').validate({
+        rules: {
+            addInput: {
+                required: true
+            }
+        }
+    });
+
+    $('#doneAddBtn').click(function () {
+        if ($('#addForm').valid()) {
+            commonAjaxRequestParams($('#addAction'), {lockName: $('#addInput').val()}, onDataChangeSuccess,
+                null, null, null);
+            $('#addInput').val('');
+            $('#addModal').modal('hide');
+        } else {
+            
+        }
+    });
 
 });

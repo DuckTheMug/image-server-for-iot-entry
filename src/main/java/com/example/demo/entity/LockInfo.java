@@ -31,9 +31,9 @@ public class LockInfo {
     @NonNull
     private String lockName;
 
-    @Column(name = "lock_state", nullable = false)
+    @Column(name = "lock_state", columnDefinition = "bit default true", nullable = false)
     @NonNull
-    private Boolean lockState;
+    private Boolean lockState = Boolean.TRUE;
 
     @OneToMany(mappedBy = "lockInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY,
             orphanRemoval = true, targetEntity = User.class)

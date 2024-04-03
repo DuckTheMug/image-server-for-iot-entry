@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.constant.PathConstants;
 import com.example.demo.exception.IllegalFileTypeException;
 import com.example.demo.exception.StorageException;
-import com.example.demo.exception.UserAlreadyExistsException;
+import com.example.demo.exception.DuplicationException;
 import com.example.demo.constant.AllowedFileTypes;
 import com.example.demo.entity.Storage;
 import com.example.demo.util.RandomFileNameUtil;
@@ -70,7 +70,7 @@ public class StorageService {
             }
         } catch (FileAlreadyExistsException e) {
             this.recentFileName = previousFileName;
-            throw new UserAlreadyExistsException("User already exists.", e);
+            throw new DuplicationException("User already exists.", e);
         } catch (IOException e) {
             this.recentFileName = previousFileName;
             throw new StorageException("Failed to store the file.", e);

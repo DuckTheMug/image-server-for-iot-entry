@@ -13,4 +13,6 @@ public interface LockInfoRepo extends JpaRepository<LockInfo, Long> {
 
     @Query("select l from LockInfo l where l.lockName ilike %?1% and l.deleted = false")
     Optional<List<LockInfo>> findByLockNameIgnoreCase(String lockName);
+
+    int countByDeletedIsFalseAndLockNameEquals(String lockName);
 }

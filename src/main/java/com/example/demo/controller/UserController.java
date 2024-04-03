@@ -38,7 +38,7 @@ public class UserController {
             storageService.flushPath(Boolean.FALSE);
         } catch (IOException e) {
             throw new StorageException("Failed to store file.", e);
-        } catch (UserAlreadyExistsException | NotFoundException |
+        } catch (DuplicationException | NotFoundException |
                  InvalidImageInputException | InvalidPathException |
                  StorageException e) {
             storageService.flushPath(Boolean.TRUE);

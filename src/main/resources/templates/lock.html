@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div class="card-footer border-0 d-flex justify-content-end">
-                    <button class="btn btn-primary mx-2" type="button">
+                    <button class="btn btn-primary mx-2" id="addBtn" type="button">
                         <i class="fa fa-plus"></i>
                         <span class="btn-title" th:text="#{common.add}"></span>
                     </button>
@@ -72,4 +72,46 @@
     </div>
     <div th:replace="~{fragments/toast :: toast}"></div>
 </body>
+<div th:replace="~{fragments/modal}"></div>
+<div class="modal fade" id="addModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered mw-50">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h4 class="modal-title w-100" th:text="#{lock.add}"></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addForm">
+                <div class="modal-body">
+                    <div class="row align-items-center">
+                        <div class="form-check-inline col-auto">
+                            <label class="form-check-label h5" for="addInput" th:text="#{lock.name}"></label>
+                        </div>
+                        <div class="col">
+                            <div>
+                                <input class="form-control" id="addInput" type="text"/>
+                                <div class="d-none" id="addAction" th:attr="data-action=@{/master/lock/doAdd}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-1 error-msg-container d-none">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-end">
+                    <button class="btn btn-primary mx-2" id="doneAddBtn" type="button">
+                        <i class="fa fa-plus"></i>
+                        <span class="btn-title" th:text="#{common.add}"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <i class="fa fa-xmark"></i>
+                        <span class="btn-title" th:text="#{common.cancel}"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </html>

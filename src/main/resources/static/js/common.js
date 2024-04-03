@@ -102,6 +102,8 @@ function viewMessageAjax(data) {
 }
 
 function clearCommonMessage() {
-    $("#fieldError-msg-error").parent().addClass('d-none').text('');
-    $("#fieldSuccess-msg-success").parent().addClass('d-none').text('');
+    $("#fieldError-msg-error").parent().addClass('d-none');
+    $("#fieldError-msg-error").text('');
+    $("#fieldSuccess-msg-success").parent().addClass('d-none');
+    $("#fieldSuccess-msg-success").text('');
 }
